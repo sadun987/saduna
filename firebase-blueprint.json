@@ -1,0 +1,184 @@
+{
+  "entities": {
+    "Conversation": {
+      "title": "Conversation",
+      "description": "A persistent AI coding assistant chat or tool session owned by an authenticated user.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated Firebase user UID owning this conversation."
+        },
+        "title": {
+          "type": "string",
+          "description": "Display title of the conversation."
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["chat", "generate", "debug", "explain", "project"],
+          "description": "Assistant mode used for this conversation."
+        },
+        "language": {
+          "type": "string",
+          "description": "Target programming language for code tasks."
+        },
+        "modelName": {
+          "type": "string",
+          "description": "Gemini model identifier used in this session."
+        },
+        "lastMessagePreview": {
+          "type": "string",
+          "description": "Short preview snippet of the latest message."
+        },
+        "messageCount": {
+          "type": "integer",
+          "description": "Total number of messages in this conversation."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp (FieldValue.serverTimestamp()) when created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp (FieldValue.serverTimestamp()) when last updated."
+        }
+      },
+      "required": [
+        "userId",
+        "title",
+        "mode",
+        "language",
+        "modelName",
+        "lastMessagePreview",
+        "messageCount",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "An individual user or AI message inside a conversation.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated Firebase user UID owning this message."
+        },
+        "conversationId": {
+          "type": "string",
+          "description": "Parent conversation document ID."
+        },
+        "role": {
+          "type": "string",
+          "enum": ["user", "model"],
+          "description": "Author role of the message."
+        },
+        "content": {
+          "type": "string",
+          "description": "Markdown/text content of the message including code blocks."
+        },
+        "language": {
+          "type": "string",
+          "description": "Optional programming language context."
+        },
+        "toolMode": {
+          "type": "string",
+          "enum": ["chat", "generate", "debug", "explain", "project"],
+          "description": "Coding tool mode active when this message was created."
+        },
+        "sequenceOrder": {
+          "type": "integer",
+          "description": "Monotonic message sequence number within the conversation."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp (FieldValue.serverTimestamp()) when created."
+        }
+      },
+      "required": [
+        "userId",
+        "conversationId",
+        "role",
+        "content",
+        "language",
+        "toolMode",
+        "sequenceOrder",
+        "createdAt"
+      ]
+    },
+    "CodeSnippet": {
+      "title": "CodeSnippet",
+      "description": "A saved code file or generated script in the user's Ghost Malli AI code vault.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated Firebase user UID owning this snippet."
+        },
+        "title": {
+          "type": "string",
+          "description": "Human-readable title for the saved snippet."
+        },
+        "fileName": {
+          "type": "string",
+          "description": "Suggested file name with extension (e.g., Main.kt, app.py)."
+        },
+        "language": {
+          "type": "string",
+          "description": "Programming language name."
+        },
+        "code": {
+          "type": "string",
+          "description": "Source code body."
+        },
+        "summary": {
+          "type": "string",
+          "description": "Optional summary or notes."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp (FieldValue.serverTimestamp()) when created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp (FieldValue.serverTimestamp()) when last updated."
+        }
+      },
+      "required": [
+        "userId",
+        "title",
+        "fileName",
+        "language",
+        "code",
+        "summary",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/conversations/{conversationId}": {
+      "schema": {
+        "$ref": "#/entities/Conversation"
+      },
+      "description": "User-scoped AI coding assistant conversation sessions."
+    },
+    "/users/{userId}/conversations/{conversationId}/messages/{messageId}": {
+      "schema": {
+        "$ref": "#/entities/ChatMessage"
+      },
+      "description": "Messages belonging to a specific user conversation."
+    },
+    "/users/{userId}/snippets/{snippetId}": {
+      "schema": {
+        "$ref": "#/entities/CodeSnippet"
+      },
+      "description": "User-scoped saved code editor files and generated code snippets."
+    }
+  }
+}

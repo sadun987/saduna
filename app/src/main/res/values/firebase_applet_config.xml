@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="firestore_database_id" translatable="false">ai-studio-android-ghostmal-a7f5500f-1a2d-465a-a45a-686e780d98cb</string>
+    <string name="recaptcha_site_key" translatable="false">6Le0sh4uAAAAAL839QNBZ8jPEasXe9HV03zzEYif</string>
+</resources>
